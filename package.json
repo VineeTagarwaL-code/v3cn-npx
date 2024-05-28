@@ -1,13 +1,9 @@
 {
   "name": "v3cn-npx",
   "version": "1.0.0",
-
   "main": "index.js",
   "scripts": {
-
-      "build": "mkdir -p dist/components/ && tsc && cp src/components/*.txt dist/components/"
-,
-    
+    "build": "mkdir -p dist/components/ && tsc && cp src/components/*.txt dist/components/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
