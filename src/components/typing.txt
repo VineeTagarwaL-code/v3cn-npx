@@ -1,0 +1,80 @@
+"use client";
+import React, { FC, useEffect, useState, useRef } from "react";
+import { cn } from "@/utils/cn";
+import { useInView } from "react-intersection-observer";
+
+interface TypingProps {
+  interval: number;
+  text: string;
+  containerClassname?: string;
+  textClassName?: string;
+  randomClassName?: string;
+}
+
+const getRandomString = (length: number) => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+};
+
+export const Typing: FC<TypingProps> = ({
+  interval,
+  text,
+  containerClassname,
+  textClassName,
+  randomClassName
+}) => {
+  const [randomString, setRandomString] = useState<string>('');
+  const [actualText, setActualText] = useState<string>('');
+  const [length, setLength] = useState<number>(0);
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  useEffect(() => {
+    if (inView) {
+      setRandomString(getRandomString(text.length));
+      const id = setInterval(() => {
+        setLength((prevLength) => {
+          const newLength = prevLength + 1;
+          if (newLength <= text.length) {
+            const actualString = text.substring(0, newLength);
+            setRandomString(getRandomString(text.length - newLength));
+            setActualText(actualString);
+            return newLength;
+          } else {
+            clearInterval(id);
+            return prevLength;
+          }
+        });
+      }, interval);
+
+      return () => clearInterval(id);
+    }
+  }, [inView, interval, text]);
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "px-4 py-3 flex justify-start items-center min-w-[1200px] min-h-[100px]",
+        containerClassname
+      )}
+    >
+      <div>
+        <p className={cn("text-lg", textClassName)}>
+          {actualText}
+          <span className={cn("text-gray-600", randomClassName)}>
+            {randomString}
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+};

@@ -9,6 +9,7 @@ import {
   writeToFile,
 } from "../utils/detector";
 import colors from "colors";
+import { addDependency } from "./add-dependency";
 const directoryname = dirname(__filename);
 
 async function addComponent(componentName: string) {
@@ -44,6 +45,7 @@ async function addComponent(componentName: string) {
         isError: false,
         message: `✅ Component created at ${filePath}`,
       });
+      await addDependency(componentName);
     } else if (isNextJs) {
       console.log(`✅ Next project detected.`);
       if (isNextAppSrcRouter) {

@@ -16,6 +16,8 @@ add
       addComponent("discord");
     } else if (components.includes("cursor")) {
       addComponent("cursor");
+    } else if (components.includes("typing")) {
+      addComponent("typing");
     } else {
       console.log("Component not found");
     }
