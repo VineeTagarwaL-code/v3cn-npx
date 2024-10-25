@@ -41,10 +41,7 @@ async function addComponent(componentName: string) {
       isPageSrcRouter,
       isPageRouter,
     } = getProjectDetails();
-    const terminalPath = path.join(
-      directoryname,
-      `../components/${componentName}.txt`
-    );
+
     const currentDir = process.cwd();
 
     // React project handling
